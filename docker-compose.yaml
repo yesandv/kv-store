@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    image: kv-store
+    container_name: kv-app
+    ports:
+      - "50051:50051"
+    depends_on:
+      - redis
+    stdin_open: true
+    tty: true
+    networks:
+      - app_network
+
+  redis:
+    image: redis
+    container_name: kv-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+  test_redis:
+    image: redis
+    container_name: test-redis
+    ports:
+      - "6380:6379"
+    networks:
+      - test_network
+
+networks:
+  app_network:
+  test_network:
